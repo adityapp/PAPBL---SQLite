@@ -69,6 +69,29 @@ class ProdukDatabaseHelper(context: Context) {
         return arrayData
     }
 
+    fun filter(tokoId: Int, query: CharSequence): ArrayList<ProdukModel> {
+        var arrayData = arrayListOf<ProdukModel>()
+        Log.e("TOKOID", tokoId.toString())
+        val selection = "$COLUMN_NAME_ID_TOKO = $tokoId AND $COLUMN_NAME_PRODUK LIKE '%$query%'"
+        val cursor = database.query(TABLE_NAME_PRODUK, null, selection, null, null, null, "$_ID ASC", null)
+        cursor.moveToFirst()
+        if (cursor.count > 0) {
+            do {
+                var produk = ProdukModel(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_PRODUK)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_HARGA)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NAME_ID_TOKO))
+                )
+                arrayData.add(produk)
+                cursor.moveToNext()
+
+            } while (!cursor.isAfterLast)
+        }
+        cursor.close()
+        return arrayData
+    }
+
     fun close() {
         database.close()
     }

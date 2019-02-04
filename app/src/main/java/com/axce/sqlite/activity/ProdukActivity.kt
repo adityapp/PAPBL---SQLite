@@ -3,6 +3,9 @@ package com.axce.sqlite.activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import com.axce.sqlite.R
 import com.axce.sqlite.adapter.ProdukAdapter
@@ -38,7 +41,27 @@ class ProdukActivity : AppCompatActivity(), View.OnClickListener {
         rv_toko.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rv_toko.adapter = adapter
 
-        adapter.setOnClickListener(object : ProdukAdapter.OnClickListener{
+        edt_search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                Log.d("TEXT", p0.toString())
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                Log.d("TEXT", p0.toString())
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0 != null) {
+                    adapter.dataSet = produkHelper.filter(toko.id, p0!!)
+                } else {
+                    adapter.dataSet = produkHelper.getAllData(toko.id)
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+        })
+
+        adapter.setOnClickListener(object : ProdukAdapter.OnClickListener {
             override fun delete(data: ProdukModel) {
                 produkHelper.delete(data)
                 adapter.dataSet = produkHelper.getAllData(toko.id)
@@ -54,7 +77,7 @@ class ProdukActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(p0: View?) {
-        when(p0){
+        when (p0) {
             btn_add -> dialogBox.showNoticeDialog(this, toko.id, produkHelper, adapter)
         }
     }

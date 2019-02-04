@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context=".activity.ProdukActivity"
-    android:background="@android:color/white">
+    tools:context=".activity.ProdukActivity">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -38,9 +38,18 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
+    <EditText
+        android:id="@+id/edt_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:hint="Search"
+        android:paddingHorizontal="20dp"
+        android:elevation="4dp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_toko"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
